@@ -19,10 +19,11 @@ import { RouterOutlet, RouterLink } from '@angular/router';
         <nav class="navbar">
           <ul>
             <li><a routerLink="/">Home</a></li>
-            <li><a href="#">Characters</a></li>
-            <li><a href="#">Classes</a></li>
-            <li><a href="#">Races</a></li>
-            <li><a href="#">Equipment</a></li>
+            <li><a routerLink="/players">Players</a></li>
+            <li><a routerLink="/create-guild">Create Guild</a></li>
+            <li><a routerLink="/create-faction">Create Faction</a></li>
+            <li><a routerLink="/create-character">Create Character</a></li>
+            <li><a routerLink="/signin">Sign in</a></li>
           </ul>
         </nav>
         <section class="content">
@@ -32,9 +33,11 @@ import { RouterOutlet, RouterLink } from '@angular/router';
 
       <footer class="footer">
         <nav class="footer-nav">
-          <a routerLink="/">Home</a> | <a href="#">Characters</a> |
-          <a href="#">Classes</a> | <a href="#">Races</a> |
-          <a href="#">Equipment</a>
+          <a routerLink="/">Home</a> | <a routerLink="/players">Players</a> |
+          <a routerLink="/create-guild">Create Guild</a> |
+          <a routerLink="/create-faction">Create Faction</a> |
+          <a routerLink="/create-character">Create Character</a> |
+          <a routerLink="/signin">Sign in</a>
         </nav>
         <p>&copy; 2026 RPG Character Builder</p>
       </footer>
