@@ -8,16 +8,21 @@ describe('PlayersComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PlayersComponent]
-    })
-    .compileComponents();
+      imports: [PlayersComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(PlayersComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create Players Component', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should correctly display a list of characters', () => {
+    const compiled = fixture.nativeElement as HTMLElement;
+    const characterList = compiled.querySelectorAll('.character-card');
+    expect(characterList.length).toEqual(component.characters.length);
   });
 });
