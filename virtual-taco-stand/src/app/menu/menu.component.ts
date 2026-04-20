@@ -39,7 +39,7 @@ import { Component } from '@angular/core';
         padding: 0;
       }
       .menu-item {
-        flex: 0 1 calc(33.33% -20px);
+        flex: 0 1 calc(33.33% - 20px);
         margin: 10px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       }
