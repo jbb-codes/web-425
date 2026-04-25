@@ -5,7 +5,9 @@ import { PlayersComponent } from './players/players.component';
 import { CreateGuildComponent } from './create-guild/create-guild.component';
 import { CreateFactionComponent } from './create-faction/create-faction.component';
 import { CreateCharacterComponent } from './create-character/create-character.component';
+import { authGuard } from './auth.guard';
 
+// Used Claude to help implement create character guard
 export const routes: Routes = [
   {
     path: '',
@@ -34,5 +36,6 @@ export const routes: Routes = [
   {
     path: 'create-character',
     component: CreateCharacterComponent,
+    canActivate: [authGuard],
   },
 ];
