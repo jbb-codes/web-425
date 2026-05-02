@@ -3,6 +3,9 @@ import { By } from '@angular/platform-browser';
 
 import { CreateGuildComponent } from './create-guild.component';
 
+// Walked through the tests with Claude to understand them.
+// Had Claude generate two additional tests for practice
+// And collaborated with Claude to implement test three when I got stuck.
 describe('CreateGuildComponent', () => {
   let component: CreateGuildComponent;
   let fixture: ComponentFixture<CreateGuildComponent>;

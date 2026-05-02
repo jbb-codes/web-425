@@ -11,6 +11,7 @@ interface Guild {
 
 // I used Claude to help generate the template and styles.
 // I read through the template to verify the output.
+// I verified that the UI styles align with the rest of the site.
 @Component({
   selector: 'app-create-guild',
   standalone: true,
@@ -338,6 +339,7 @@ export class CreateGuildComponent {
     this.acceptTerms = false;
     this.notificationPreference = '';
     this.guilds = [
+      // Used Claude to generate default guild roster
       {
         guildName: 'The Bronze Company',
         description: 'A reliable guild open to all adventurers.',
