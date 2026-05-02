@@ -337,7 +337,38 @@ export class CreateGuildComponent {
     this.type = '';
     this.acceptTerms = false;
     this.notificationPreference = '';
-    this.guilds = [];
+    this.guilds = [
+      {
+        guildName: 'The Bronze Company',
+        description: 'A reliable guild open to all adventurers.',
+        type: 'Casual',
+        notificationPreference: 'Email',
+      },
+      {
+        guildName: 'Stonepath Guild',
+        description: 'A dependable guild where every member earns their place.',
+        type: 'Competitive',
+        notificationPreference: 'In-App',
+      },
+      {
+        guildName: 'The Dawnwatch',
+        description: 'A guild of early risers and loyal defenders.',
+        type: 'Casual',
+        notificationPreference: 'SMS',
+      },
+      {
+        guildName: 'The Crossroads',
+        description: 'A guild where paths meet and new alliances are formed.',
+        type: 'Social',
+        notificationPreference: 'Email',
+      },
+      {
+        guildName: 'The Steadfast',
+        description: 'A guild that never leaves a member behind.',
+        type: 'Casual',
+        notificationPreference: 'In-App',
+      },
+    ];
   }
 
   addGuild(): void {
