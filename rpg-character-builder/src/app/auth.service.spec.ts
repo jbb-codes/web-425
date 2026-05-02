@@ -8,7 +8,11 @@ describe('AuthService', () => {
 
   // Use Claude to help generate
   beforeEach(() => {
-    const spy = jasmine.createSpyObj('CookieService', ['set', 'deleteAll']);
+    const spy = jasmine.createSpyObj('CookieService', [
+      'get',
+      'set',
+      'deleteAll',
+    ]);
     TestBed.configureTestingModule({
       providers: [AuthService, { provide: CookieService, useValue: spy }],
     });

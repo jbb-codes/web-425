@@ -29,13 +29,13 @@ describe('CreateGuildComponent', () => {
   // is missing, submitting should NOT add a guild to the list.
   it('should be invalid when fields are empty', () => {
     // Arrange: all fields start empty (default state of the component)
-    // No setup needed — we're testing the initial state
+    const initialGuildCount = component.guilds.length;
 
     // Act: attempt to submit with no data filled in
     component.addGuild();
 
     // Assert: nothing was added because the form was invalid
-    expect(component.guilds.length).toBe(0);
+    expect(component.guilds.length).toBe(initialGuildCount);
   });
 
   // TEST 2
@@ -43,6 +43,7 @@ describe('CreateGuildComponent', () => {
   // the guild should be added to the roster.
   it('should be valid when filled correctly', () => {
     // Arrange: fill in every required field
+    const initialGuildCount = component.guilds.length;
     component.guildName = 'The Iron Circle';
     component.description = 'A guild of seasoned warriors.';
     component.type = 'Competitive';
@@ -53,8 +54,10 @@ describe('CreateGuildComponent', () => {
     component.addGuild();
 
     // Assert: one guild now exists in the roster
-    expect(component.guilds.length).toBe(1);
-    expect(component.guilds[0].guildName).toBe('The Iron Circle');
+    expect(component.guilds.length).toBe(initialGuildCount + 1);
+    expect(component.guilds[initialGuildCount].guildName).toBe(
+      'The Iron Circle',
+    );
   });
 
   // PRACTICE TEST 1
@@ -84,6 +87,7 @@ describe('CreateGuildComponent', () => {
   // is false, even if all other fields are filled in correctly.
   it('should not add a guild when acceptTerms is unchecked', () => {
     // Arrange: fill in every field except leave acceptTerms as false
+    const initialGuildCount = component.guilds.length;
     component.guildName = 'Test guild name';
     component.description = 'Test description';
     component.type = 'Casual';
@@ -94,7 +98,7 @@ describe('CreateGuildComponent', () => {
     component.addGuild();
 
     // Assert: the guilds array should still be empty
-    expect(component.guilds.length).toBe(0);
+    expect(component.guilds.length).toBe(initialGuildCount);
   });
 
   // TEST 3
@@ -103,6 +107,10 @@ describe('CreateGuildComponent', () => {
   // submit via the DOM, and confirm the method was invoked.
   it('should call addGuild on form submit with valid data', () => {
     // Arrange: fill in valid data and create a spy on addGuild with callThrough
+    const initialGuildCount = component.guilds.length;
+    const spy = spyOn(component, 'addGuild').and.callThrough();
+    fixture.detectChanges();
+
     component.guildName = 'Test guild name';
     component.description = 'Test description';
     component.type = 'Casual';
@@ -110,15 +118,12 @@ describe('CreateGuildComponent', () => {
     component.notificationPreference = 'Email';
 
     // Act: trigger the form's ngSubmit event via the DOM using fixture.debugElement
-    const spy = spyOn(component, 'addGuild').and.callThrough();
-    fixture.detectChanges();
-
     fixture.debugElement
       .query(By.css('form'))
       .triggerEventHandler('ngSubmit', null);
 
     // Assert: spy was called AND guilds roster has one entry
     expect(spy).toHaveBeenCalled();
-    expect(component.guilds.length).toBe(1);
+    expect(component.guilds.length).toBe(initialGuildCount + 1);
   });
 });
