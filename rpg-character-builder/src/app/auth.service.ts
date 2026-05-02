@@ -21,6 +21,9 @@ export class AuthService {
     private cookieService: CookieService,
     private router: Router,
   ) {
+    // Claude suggested to sync authState with the cookie on component initialization
+    // to avoid the user welcome message from resetting on page reload when the
+    // cookie still exists.
     if (this.cookieService.get('session_user')) {
       this.authState.next(true);
     }
