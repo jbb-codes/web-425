@@ -21,6 +21,9 @@ export class AuthService {
     private cookieService: CookieService,
     private router: Router,
   ) {
+    if (this.cookieService.get('session_user')) {
+      this.authState.next(true);
+    }
     this.users = [
       { empId: 1, email: 'john.smith@gmail.com', password: 'Password1' },
       { empId: 2, email: 'jane.doe@gmail.com', password: 'Password2' },
