@@ -11,13 +11,14 @@ export interface Order {
   orderId: number;
 }
 
-import { Component } from '@angular/core';
-import { FormsModule, NgForm } from '@angular/forms';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { OrderSummaryComponent } from '../order-summary/order-summary.component';
 @Component({
   selector: 'app-order',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, OrderSummaryComponent],
   template: `
     <div class="order-form-container">
       <form
@@ -26,6 +27,7 @@ import { CommonModule } from '@angular/common';
         (ngSubmit)="addToOrder()"
       >
         <h1>Complete the form below to place a new order.</h1>
+
         <fieldset>
           <legend>My Order</legend>
           <label for="tacoType">Taco Type</label>
@@ -39,34 +41,35 @@ import { CommonModule } from '@angular/common';
               <option value="{{ taco.id }}">{{ taco.name }}</option>
             }
           </select>
+
           <label for="qty">Quantity</label>
           <input
             type="text"
-            id="qty"
             name="qty"
+            id="qty"
             class="qty-input"
             [(ngModel)]="quantity"
-            ngModel
           />
+
           <div class="customization-section">
             <label>Customize</label>
+
             <div class="customization-option">
               <input
                 type="checkbox"
                 id="noOnions"
                 name="noOnions"
                 [(ngModel)]="noOnions"
-                ngModel
               />
               <label for="noOnions">No Onions</label>
             </div>
+
             <div class="customization-option">
               <input
                 type="checkbox"
                 id="noCilantro"
                 name="noCilantro"
                 [(ngModel)]="noCilantro"
-                ngModel
               />
               <label for="noCilantro">No Cilantro</label>
             </div>
@@ -74,35 +77,9 @@ import { CommonModule } from '@angular/common';
           <input type="submit" value="Add to Order" />
         </fieldset>
       </form>
+
       <div class="order-summary">
-        <h1>Order Summary</h1>
-        @if (order.tacos.length > 0) {
-          <ul>
-            @for (taco of order.tacos; track taco) {
-              <li>
-                <strong>{{ taco.quantity }}x {{ taco.name }}</strong>
-                <br />
-                Price per taco:
-                {{ taco.price | currency: 'USD' : 'symbol' : '1.2-2' }}
-                <br />
-                @if (taco.noOnions) {
-                  No onions
-                  <br />
-                }
-                @if (taco.noCilantro) {
-                  No cilantro
-                  <br />
-                }
-              </li>
-            }
-          </ul>
-          <p>
-            <strong>Total:</strong>
-            {{ getTotal() | currency: 'USD' : 'symbol' : '1.2-2' }}
-          </p>
-        } @else {
-          <p>No tacos added to the order yet.</p>
-        }
+        <app-order-summary [order]="order"></app-order-summary>
       </div>
     </div>
   `,
@@ -110,7 +87,7 @@ import { CommonModule } from '@angular/common';
     `
       .order-form-container {
         display: flex;
-        justify-content: spacebetween;
+        justify-content: space-between;
         gap: 10px;
       }
       .order-form {
@@ -155,10 +132,13 @@ import { CommonModule } from '@angular/common';
       input[type='checkbox'] {
         margin-right: 5px;
       }
+      /*
+      Removed this from the original styling
       .order-summary li {
         margin-bottom: 10px;
         padding: 5px;
       }
+      */
     `,
   ],
 })
@@ -170,6 +150,8 @@ export class OrderComponent {
   noOnions: boolean = false;
   noCilantro: boolean = false;
   orderTotal: number;
+
+  @Output() orderUpdated = new EventEmitter<Order>();
 
   constructor() {
     this.tacos = [
@@ -206,6 +188,9 @@ export class OrderComponent {
       };
       this.order.tacos.push(tacoToAdd);
       console.log('Order after adding:', this.order);
+
+      this.orderUpdated.emit(this.order);
+
       this.resetForm();
     } else {
       console.error(
@@ -213,13 +198,6 @@ export class OrderComponent {
         this.selectedTacoId,
       );
     }
-  }
-
-  getTotal() {
-    return this.order.tacos.reduce(
-      (acc, taco) => acc + taco.price * (taco.quantity ?? 1),
-      0,
-    );
   }
 
   resetForm() {
