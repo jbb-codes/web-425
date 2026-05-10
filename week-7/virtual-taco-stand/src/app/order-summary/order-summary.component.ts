@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Order } from '../order/order.component';
 import { CommonModule } from '@angular/common';
 
@@ -10,12 +10,19 @@ import { CommonModule } from '@angular/common';
     <h1>Order Summary</h1>
     @if (order.tacos.length > 0) {
       <ul>
-        @for (taco of order.tacos; track taco) {
+        @for (taco of order.tacos; track taco; let idx = $index) {
           <li>
+            @if (showItemNumbers) {
+              <span class="item-label"><strong>Item {{ idx + 1 }}</strong></span>
+              <br />
+            }
             <strong>{{ taco.quantity }}x {{ taco.name }}</strong>
             <br />
             Price per taco:
             {{ taco.price | currency: 'USD' : 'symbol' : '1.2-2' }}
+            <br />
+            Subtotal:
+            {{ taco.price * (taco.quantity ?? 1) | currency: 'USD' : 'symbol' : '1.2-2' }}
             <br />
             @if (taco.noOnions) {
               No onions
@@ -24,6 +31,9 @@ import { CommonModule } from '@angular/common';
             @if (taco.noCilantro) {
               No cilantro
               <br />
+            }
+            @if (showRemoveButtons) {
+              <button (click)="removeTaco.emit(idx)">Remove Taco</button>
             }
           </li>
         }
@@ -41,10 +51,24 @@ import { CommonModule } from '@angular/common';
       margin-bottom: 10px;
       padding: 5px;
     }
+
+    .item-label {
+      font-size: 0.9em;
+      color: #555;
+    }
+
+    button {
+      margin-top: 6px;
+      padding: 4px 10px;
+      cursor: pointer;
+    }
   `,
 })
 export class OrderSummaryComponent {
   @Input() order!: Order;
+  @Input() showItemNumbers = false;
+  @Input() showRemoveButtons = false;
+  @Output() removeTaco = new EventEmitter<number>();
 
   getTotal() {
     return this.order.tacos.reduce(

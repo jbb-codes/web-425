@@ -15,6 +15,7 @@ import { Router } from '@angular/router';
 export class AuthService {
   private users: User[];
   private authState = new BehaviorSubject(<boolean>false);
+
   constructor(
     private cookieService: CookieService,
     private router: Router,
