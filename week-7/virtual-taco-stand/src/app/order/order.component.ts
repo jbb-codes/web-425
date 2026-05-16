@@ -15,38 +15,66 @@ export interface Order {
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { OrderSummaryComponent } from "../order-summary/order-summary.component";
+import { OrderSummaryComponent } from '../order-summary/order-summary.component';
 
 @Component({
-    selector: 'app-order',
-    standalone: true,
-    template: `
+  selector: 'app-order',
+  standalone: true,
+  template: `
     <div class="order-form-container">
-      <form class="order-form" #tacoOrderForm="ngForm" (ngSubmit)="addToOrder();">
+      <form
+        class="order-form"
+        #tacoOrderForm="ngForm"
+        (ngSubmit)="addToOrder()"
+      >
         <h1>Complete the form below to place a new order.</h1>
 
         <fieldset>
           <legend>My Order</legend>
           <label for="tacoType">Taco Type</label>
-          <select name="tacoType" id="tacoType" [(ngModel)]="selectedTacoId" ngModel>
+          <select
+            name="tacoType"
+            id="tacoType"
+            [(ngModel)]="selectedTacoId"
+            ngModel
+          >
             @for (taco of tacos; track taco) {
               <option value="{{ taco.id }}">{{ taco.name }}</option>
             }
           </select>
 
           <label for="qty">Quantity</label>
-          <input type="text" id="qty" name="qty" class="qty-input" [(ngModel)]="quantity" ngModel>
+          <input
+            type="text"
+            id="qty"
+            name="qty"
+            class="qty-input"
+            [(ngModel)]="quantity"
+            ngModel
+          />
 
           <div class="customization-section">
             <label>Customize</label>
 
             <div class="customization-option">
-              <input type="checkbox" id="noOnions" name="noOnions" [(ngModel)]="noOnions" ngModel>
+              <input
+                type="checkbox"
+                id="noOnions"
+                name="noOnions"
+                [(ngModel)]="noOnions"
+                ngModel
+              />
               <label for="noOnions">No Onions</label>
             </div>
 
             <div class="customization-option">
-              <input type="checkbox" id="noCilantro" name="noCilantro" [(ngModel)]="noCilantro" ngModel>
+              <input
+                type="checkbox"
+                id="noCilantro"
+                name="noCilantro"
+                [(ngModel)]="noCilantro"
+                ngModel
+              />
               <label for="noCilantro">No Cilantro</label>
             </div>
           </div>
@@ -56,80 +84,85 @@ import { OrderSummaryComponent } from "../order-summary/order-summary.component"
       </form>
 
       <div class="order-summary">
+        <!-- Used Claude to find an error: comments cannot be inside a tag -->
+        <!-- Removed showItemNumber and showRemoveButton child component property bindings -->
         <app-order-summary
           [order]="order"
-          [showItemNumbers]="true"
-          [showRemoveButtons]="true"
           (removeTaco)="onRemoveTaco($event)"
         ></app-order-summary>
       </div>
     </div>
   `,
-    styles: [`
-    .order-form-container {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-    }
+  styles: [
+    `
+      .order-form-container {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+      }
 
-    .order-form {
-      flex: 1;
-      margin-right: 20px;
-    }
+      .order-form {
+        flex: 1;
+        margin-right: 20px;
+      }
 
-    .order-summary {
-      flex: 1;
-    }
+      .order-summary {
+        flex: 1;
+      }
 
-    fieldset {
-      margin-bottom: 20px;
-    }
+      fieldset {
+        margin-bottom: 20px;
+      }
 
-    label, select, qty-input {
-      display: block;
-      margin-bottom: 5px;
-    }
+      label,
+      select,
+      qty-input {
+        display: block;
+        margin-bottom: 5px;
+      }
 
-    .qty-input, select, input[type="submit"] {
-      padding: 8px;
-      box-sizing: border-box;
-    }
+      .qty-input,
+      select,
+      input[type='submit'] {
+        padding: 8px;
+        box-sizing: border-box;
+      }
 
-    select {
-      width: 100%;
-    }
+      select {
+        width: 100%;
+      }
 
-    .qty-input {
-      width: 20%;
-    }
+      .qty-input {
+        width: 20%;
+      }
 
-    input[type="submit"] {
-      float: right;
-    }
+      input[type='submit'] {
+        float: right;
+      }
 
-    .customization-section {
-      margin-top: 10px;
-    }
+      .customization-section {
+        margin-top: 10px;
+      }
 
-    .customization-option {
-      display: flex;
-      align-items: center;
-      margin-bottom: 5px;
-    }
+      .customization-option {
+        display: flex;
+        align-items: center;
+        margin-bottom: 5px;
+      }
 
-    input[type="checkbox"] {
-      margin-right: 5px;
-    }
-    /*
+      input[type='checkbox'] {
+        margin-right: 5px;
+      }
+      /*
     // Removed this from the original styling
     .order-summary li {
       margin-bottom: 10px;
       padding: 5px;
     }
     */
-  `
-    ],
-    imports: [FormsModule, CommonModule, OrderSummaryComponent]
+    `,
+  ],
+  imports: [FormsModule, CommonModule, OrderSummaryComponent],
 })
 export class OrderComponent {
   tacos: Taco[];
@@ -144,16 +177,16 @@ export class OrderComponent {
 
   constructor() {
     this.tacos = [
-      {id: 1, name: "Carnitas Taco", price: 3.25},
-      {id: 2, name: "Queso Birria Taco", price: 3.50},
-      {id: 3, name: "Al Pastor Taco", price: 3.25},
-      {id: 4, name: "Tacos de Lengua", price: 3.50},
-      {id: 5, name: "Chicken Taco", price: 3.25},
-      {id: 6, name: "Fish Taco", price: 3.25},
-      {id: 7, name: "Veggie Taco", price: 3.25},
-      {id: 8, name: "Chicharron Taco", price: 3.25},
-      {id: 9, name: "Potato Taco", price: 3.25},
-      {id: 10, name: "Chorizo Taco", price: 3.25}
+      { id: 1, name: 'Carnitas Taco', price: 3.25 },
+      { id: 2, name: 'Queso Birria Taco', price: 3.5 },
+      { id: 3, name: 'Al Pastor Taco', price: 3.25 },
+      { id: 4, name: 'Tacos de Lengua', price: 3.5 },
+      { id: 5, name: 'Chicken Taco', price: 3.25 },
+      { id: 6, name: 'Fish Taco', price: 3.25 },
+      { id: 7, name: 'Veggie Taco', price: 3.25 },
+      { id: 8, name: 'Chicharron Taco', price: 3.25 },
+      { id: 9, name: 'Potato Taco', price: 3.25 },
+      { id: 10, name: 'Chorizo Taco', price: 3.25 },
     ];
 
     this.order = { tacos: [], orderId: 0 };
@@ -165,7 +198,7 @@ export class OrderComponent {
   addToOrder() {
     const selectedTacoNum = Number(this.selectedTacoId);
 
-    const selectedTaco = this.tacos.find(taco => taco.id === selectedTacoNum);
+    const selectedTaco = this.tacos.find((taco) => taco.id === selectedTacoNum);
 
     // random number between 1 and 1000 for order Id no decimal places
     this.order.orderId = Math.floor(Math.random() * 1000) + 1;
@@ -177,8 +210,8 @@ export class OrderComponent {
         price: selectedTaco.price,
         noOnions: this.noOnions,
         noCilantro: this.noCilantro,
-        quantity: this.quantity
-      }
+        quantity: this.quantity,
+      };
 
       this.order.tacos.push(tacoToAdd);
       console.log('Order after adding:', this.order);
@@ -187,7 +220,10 @@ export class OrderComponent {
 
       this.resetForm();
     } else {
-      console.error('Taco not found in the list of available tacos.', this.selectedTacoId)
+      console.error(
+        'Taco not found in the list of available tacos.',
+        this.selectedTacoId,
+      );
     }
   }
 
@@ -196,7 +232,7 @@ export class OrderComponent {
     this.order = { ...this.order, tacos: updatedTacos };
   }
 
-  resetForm () {
+  resetForm() {
     if (this.tacos.length > 0) {
       this.selectedTacoId = this.tacos[0].id;
     }

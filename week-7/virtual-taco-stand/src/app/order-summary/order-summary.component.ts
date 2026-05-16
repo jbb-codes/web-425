@@ -12,17 +12,23 @@ import { CommonModule } from '@angular/common';
       <ul>
         @for (taco of order.tacos; track taco; let idx = $index) {
           <li>
-            @if (showItemNumbers) {
-              <span class="item-label"><strong>Item {{ idx + 1 }}</strong></span>
-              <br />
-            }
+            <!-- I removed the @if statement to show the item numbers, since the new feature requires them -->
+            <!-- I had to use Claude to find a syntax error. The starting span
+            tag was missing its closing angle bracket -->
+            <span class="item-label"
+              ><strong>Item {{ idx + 1 }}</strong></span
+            >
+            <br />
             <strong>{{ taco.quantity }}x {{ taco.name }}</strong>
             <br />
             Price per taco:
             {{ taco.price | currency: 'USD' : 'symbol' : '1.2-2' }}
             <br />
             Subtotal:
-            {{ taco.price * (taco.quantity ?? 1) | currency: 'USD' : 'symbol' : '1.2-2' }}
+            {{
+              taco.price * (taco.quantity ?? 1)
+                | currency: 'USD' : 'symbol' : '1.2-2'
+            }}
             <br />
             @if (taco.noOnions) {
               No onions
@@ -32,9 +38,8 @@ import { CommonModule } from '@angular/common';
               No cilantro
               <br />
             }
-            @if (showRemoveButtons) {
-              <button (click)="removeTaco.emit(idx)">Remove Taco</button>
-            }
+            <!-- I removed the @if statement to show the remove buttons since the new feature requires them  -->
+            <button (click)="removeTaco.emit(idx)">Remove Taco</button>
           </li>
         }
       </ul>
@@ -66,8 +71,8 @@ import { CommonModule } from '@angular/common';
 })
 export class OrderSummaryComponent {
   @Input() order!: Order;
-  @Input() showItemNumbers = false;
-  @Input() showRemoveButtons = false;
+  // I removed the @Input for showRemoveButtons and showItemNumbers since the new
+  // feature requirement allows buttons and item numbers within the order summaries
   @Output() removeTaco = new EventEmitter<number>();
 
   getTotal() {
